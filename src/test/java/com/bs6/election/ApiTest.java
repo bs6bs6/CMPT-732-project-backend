@@ -22,14 +22,11 @@ public class ApiTest {
     IOpenAiSession openAiSession;
     @Before
     public void init(){
-        // 1. 配置文件
         OpenApiConfiguration configuration = new OpenApiConfiguration();
         configuration.setApiHost("https://api.openai.com/");
-        configuration.setApiKey("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");
+        configuration.setApiKey("");
 
-        // 2. 会话工厂
         OpenAiSessionFactory factory = new OpenAiSessionFactory(configuration);
-        // 3. 开启会话
         this.openAiSession = factory.getOpenAiSession();
     }
 
@@ -46,15 +43,15 @@ public class ApiTest {
         words.add("TrumpIsALaughingStock");
         words.add("nypost");
         question+=words.toString();
-        // 1. 创建参数
+
         ChatCompletionRequest chatCompletion = ChatCompletionRequest
                 .builder()
                 .messages(Collections.singletonList(Message.builder().role(Constants.Role.USER).content(question).build()))
                 .model(ChatCompletionRequest.Model.GPT_3_5_TURBO.getCode())
                 .build();
-        // 2. 发起请求
+
         ChatCompletionResponse chatCompletionResponse = openAiSession.completions(chatCompletion);
-        // 3. 解析结果
+
         chatCompletionResponse.getChoices().forEach(e -> {
             log.info("测试结果：{}", e.getMessage());
         });
